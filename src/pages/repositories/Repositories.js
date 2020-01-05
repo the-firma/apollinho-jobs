@@ -1,33 +1,32 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
-
-const REPOSITORIE = gql`
+const REPOSITORIES = [
   {
-    repository(owner: "frontendbr", name: "vagas") {
-      issues(last: 20, states: OPEN) {
-        edges {
-          node {
-            title
-            url
-          }
-        }
-      }
-    }
+    name: 'Front-end Brasil',
+    description: 'O mundo frontender dentro do Github beer',
+    slug: 'frontendbr'
+  },
+  {
+    name: 'Android Dev BR',
+    description:
+      'Comunidade de desenvolvedores Android brasileiros. Junte-se a nós! :)',
+    slug: 'androiddevbr'
+  },
+  {
+    name: 'CocoaHeads Brasil',
+    description: 'Repositório Público do CocoaHeads Brasil',
+    slug: 'CocoaHeadsBrasil'
   }
-`;
+];
 
 function RepositoriesPage() {
-  const { loading, error, data } = useQuery(REPOSITORIE);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
   return (
     <div>
-      {data.repository.issues.edges.map(({ node: { title, url } }, index) => (
-        <p key={`${title}-${index}`}>{title}</p>
+      {REPOSITORIES.map(({ name, description, slug }, index) => (
+        <Link to={slug} key={name}>
+          {name}
+        </Link>
       ))}
     </div>
   );
